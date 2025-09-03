@@ -1,0 +1,36 @@
+﻿@model DisSagligiTakip.DTOs.ProfileDTO
+
+@{
+    ViewData["Title"] = "Profilim";
+}
+
+<h2 class="mt-4">Profil Bilgilerim</h2>
+
+<form asp-action="Index" method="post" novalidate>
+    <div asp-validation-summary="All" class="text-danger"></div>
+
+    <div class="mb-3">
+        <label asp-for="FullName" class="form-label"></label>
+        <input asp-for="FullName" class="form-control" />
+        <span asp-validation-for="FullName" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Email" class="form-label"></label>
+        <input asp-for="Email" class="form-control" readonly />
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="BirthDate" class="form-label"></label>
+        <input asp-for="BirthDate" class="form-control" type="date" />
+        <span asp-validation-for="BirthDate" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Bilgilerimi Güncelle</button>
+    <a asp-action="ChangePassword" class="btn btn-outline-secondary ms-2">Şifremi Değiştir</a>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

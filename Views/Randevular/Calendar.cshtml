@@ -1,0 +1,92 @@
+﻿@{
+    ViewData["Title"] = "Randevu Takvimi";
+}
+
+<link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.css" rel="stylesheet" />
+
+<h2 class="mb-3">Randevu Takvimi</h2>
+<div id="calendar"></div>
+
+<style>
+    /* ————— Taşmayı engelle, hücre içine sığdır ————— */
+    /* Ay görünümündeki olay çipleri */
+    .fc .fc-daygrid-event {
+        display: block; /* satır genişliğini kullansın */
+        white-space: normal; /* satır kırılabilsin */
+        overflow: hidden; /* hücre dışına taşmasın */
+        text-overflow: ellipsis; /* gerekirse … ile kes */
+        padding: 2px 4px;
+        border-radius: .25rem;
+        line-height: 1.2;
+    }
+        /* Başlığı 2 satırla sınırla (destekleyen tarayıcılarda) */
+        .fc .fc-daygrid-event .fc-event-title {
+            display: -webkit-box;
+            -webkit-line-clamp: 2; /* en fazla 2 satır */
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: normal;
+        }
+        /* Saat ve başlık aynı satıra sığmadığında */
+        .fc .fc-daygrid-event .fc-event-time {
+            margin-right: .25rem;
+        }
+</style>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const el = document.getElementById('calendar');
+
+            const calendar = new FullCalendar.Calendar(el, {
+                initialView: 'dayGridMonth',
+                height: 'auto',
+                locale: 'tr',
+                firstDay: 1, // Pazartesi
+                headerToolbar: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
+                },
+                nowIndicator: true,
+                navLinks: true,
+                eventTimeFormat: { hour: '2-digit', minute: '2-digit', hour12: false },
+
+                /* —— HÜCRE İÇİNE SIĞDIRMA —— */
+                eventDisplay: 'block',        // dot yerine blok çizim
+                dayMaxEventRows: 3,           // hücre başına max 3 olay göster, kalanını “+n more”
+                moreLinkClick: 'popover',     // tıklayınca popover’da göster (sayfadan çıkmadan)
+                fixedWeekCount: false,        // satır yüksekliği esnemesine izin verir
+
+                // Olayları JSON feed'den çek
+                events: function (info, success, failure) {
+                    const url = `/Randevular/Calendar?start=${encodeURIComponent(info.startStr)}&end=${encodeURIComponent(info.endStr)}`;
+                    fetch(url, { credentials: 'same-origin' })
+                        .then(r => r.json())
+                        .then(data => success(data))
+                        .catch(err => failure(err));
+                },
+
+                // Güne tıklayınca hızlı oluşturma
+                dateClick: function (info) {
+                    const start = new Date(info.date);
+                    const end = new Date(start.getTime() + 60 * 60 * 1000); // +1 saat
+                    const toLocalIso = d => {
+                        const pad = n => String(n).padStart(2, '0');
+                        return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
+                    };
+                    window.location.href = `/Randevular/Create?start=${encodeURIComponent(toLocalIso(start))}&end=${encodeURIComponent(toLocalIso(end))}`;
+                },
+
+                // Olay tıklanınca detay
+                eventClick: function (info) {
+                    window.location.href = `/Randevular/Details/${info.event.id}`;
+                }
+            });
+
+            calendar.render();
+        });
+    </script>
+}

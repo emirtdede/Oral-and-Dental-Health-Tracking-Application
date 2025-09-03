@@ -1,0 +1,40 @@
+﻿@model DisSagligiTakip.ViewModels.RandevuFilterViewModel
+<form method="get" class="row g-2 mb-3">
+    <div class="col-md-3">
+        <label class="form-label">Hasta</label>
+        <select name="hastaId" class="form-select">
+            <option value="">(Tümü)</option>
+            @foreach (var h in Model.Hastalar)
+            {
+                <option value="@h.Value" selected="@(Model.HastaUserId?.ToString()==h.Value)">
+                    @h.Text
+                </option>
+            }
+        </select>
+    </div>
+    <div class="col-md-3">
+        <label class="form-label">Hekim</label>
+        <select name="hekimId" class="form-select">
+            <option value="">(Tümü)</option>
+            @foreach (var h in Model.Hekimler)
+            {
+                <option value="@h.Value" selected="@(Model.HekimUserId?.ToString()==h.Value)">
+                    @h.Text
+                </option>
+            }
+        </select>
+    </div>
+    <div class="col-md-2">
+        <label class="form-label">Başlangıç</label>
+        <input type="datetime-local" class="form-control" name="start"
+               value="@(Model.Start?.ToString("yyyy-MM-ddTHH:mm"))" />
+    </div>
+    <div class="col-md-2">
+        <label class="form-label">Bitiş</label>
+        <input type="datetime-local" class="form-control" name="end"
+               value="@(Model.End?.ToString("yyyy-MM-ddTHH:mm"))" />
+    </div>
+    <div class="col-md-2 d-flex align-items-end">
+        <button class="btn btn-primary w-100">Filtrele</button>
+    </div>
+</form>

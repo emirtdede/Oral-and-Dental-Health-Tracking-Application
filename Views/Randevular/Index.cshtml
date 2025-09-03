@@ -1,0 +1,50 @@
+﻿@model DisSagligiTakip.ViewModels.RandevuIndexViewModel
+@{
+    ViewData["Title"] = "Randevular";
+}
+<h2 class="mb-3">Randevular</h2>
+
+<partial name="_Filters" model="Model.Filtre" />
+
+<div class="mb-3">
+    <a asp-action="Create" class="btn btn-success">+ Yeni Randevu</a>
+    <a asp-action="Calendar" class="btn btn-outline-secondary" target="_blank">Takvim (JSON)</a>
+</div>
+
+<table class="table table-striped align-middle">
+    <thead>
+        <tr>
+            <th>Hasta</th>
+            <th>Hekim</th>
+            <th>Başlangıç</th>
+            <th>Bitiş</th>
+            <th>Durum</th>
+            <th>Konum</th>
+            <th style="width:160px;"></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var r in Model.Randevular)
+        {
+            <tr>
+                <td>@r.HastaAd</td>
+                <td>@r.HekimAd</td>
+                <td>@r.Baslangic.ToString("dd.MM.yyyy HH:mm")</td>
+                <td>@r.Bitis.ToString("dd.MM.yyyy HH:mm")</td>
+                <td>@r.Durum</td>
+                <td>@r.Konum</td>
+                <td class="text-end">
+                    <a asp-action="Details" asp-route-id="@r.Id" class="btn btn-sm btn-outline-info">Detay</a>
+                    <a asp-action="Edit" asp-route-id="@r.Id" class="btn btn-sm btn-outline-primary">Düzenle</a>
+                    <form asp-action="Delete" asp-route-id="@r.Id" method="post" class="d-inline">
+                        <button class="btn btn-sm btn-outline-danger" onclick="return confirm('Silinsin mi?')">Sil</button>
+                    </form>
+                </td>
+            </tr>
+        }
+        @if (!Model.Randevular.Any())
+        {
+            <tr><td colspan="7" class="text-center text-muted">Kayıt bulunamadı.</td></tr>
+        }
+    </tbody>
+</table>

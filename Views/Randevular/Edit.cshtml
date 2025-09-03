@@ -1,0 +1,55 @@
+﻿@model DisSagligiTakip.ViewModels.RandevuEditViewModel
+@{
+    ViewData["Title"] = "Randevu Düzenle";
+}
+<h2>Randevu Düzenle</h2>
+<hr />
+<form asp-action="Edit" method="post" class="row g-3">
+    <input type="hidden" asp-for="Id" />
+    <div class="col-md-4">
+        <label asp-for="HastaUserId" class="form-label"></label>
+        <select asp-for="HastaUserId" asp-items="Model.Hastalar" class="form-select"></select>
+        <span asp-validation-for="HastaUserId" class="text-danger"></span>
+    </div>
+    <div class="col-md-4">
+        <label asp-for="HekimUserId" class="form-label"></label>
+        <select asp-for="HekimUserId" asp-items="Model.Hekimler" class="form-select">
+            <option value="">(Seçimsiz)</option>
+        </select>
+        <span asp-validation-for="HekimUserId" class="text-danger"></span>
+    </div>
+    <div class="col-md-4">
+        <label asp-for="Durum" class="form-label"></label>
+        <select asp-for="Durum" class="form-select">
+            @foreach (var item in Enum.GetValues(typeof(DisSagligiTakip.Entities.Enums.RandevuDurumu)))
+            {
+                <option value="@item">@item</option>
+            }
+        </select>
+    </div>
+    <div class="col-md-4">
+        <label asp-for="BaslangicZamani" class="form-label"></label>
+        <input asp-for="BaslangicZamani" type="datetime-local" class="form-control" />
+        <span asp-validation-for="BaslangicZamani" class="text-danger"></span>
+    </div>
+    <div class="col-md-4">
+        <label asp-for="BitisZamani" class="form-label"></label>
+        <input asp-for="BitisZamani" type="datetime-local" class="form-control" />
+        <span asp-validation-for="BitisZamani" class="text-danger"></span>
+    </div>
+    <div class="col-12">
+        <label asp-for="Konum" class="form-label"></label>
+        <input asp-for="Konum" class="form-control" />
+    </div>
+    <div class="col-12">
+        <label asp-for="Aciklama" class="form-label"></label>
+        <textarea asp-for="Aciklama" rows="3" class="form-control"></textarea>
+    </div>
+    <div class="col-12 d-flex gap-2">
+        <button class="btn btn-primary">Güncelle</button>
+        <a asp-action="Index" class="btn btn-outline-secondary">İptal</a>
+    </div>
+</form>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

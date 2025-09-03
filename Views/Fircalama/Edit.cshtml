@@ -1,0 +1,48 @@
+﻿@model DisSagligiTakip.Models.FircalamaViewModel
+
+@{
+    ViewData["Title"] = "Fırçalama Kaydını Düzenle";
+}
+
+<h2 class="mt-4">✏️ Fırçalama Kaydını Düzenle</h2>
+
+<form asp-action="Edit" enctype="multipart/form-data" method="post" class="mt-4">
+    @* Id gizli olarak taşınmalı *@
+    <input type="hidden" asp-for="Id" />
+    <input type="hidden" asp-for="MevcutGorselYolu" />
+
+    <div class="mb-3">
+        <label asp-for="Tarih" class="form-label">Tarih</label>
+        <input asp-for="Tarih" class="form-control" type="datetime-local" />
+        <span asp-validation-for="Tarih" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Aciklama" class="form-label">Açıklama</label>
+        <textarea asp-for="Aciklama" class="form-control" rows="4"></textarea>
+        <span asp-validation-for="Aciklama" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Gorsel" class="form-label">Yeni Görsel Yükle (isteğe bağlı)</label>
+        <input asp-for="Gorsel" type="file" class="form-control" />
+        <span asp-validation-for="Gorsel" class="text-danger"></span>
+    </div>
+
+    @if (!string.IsNullOrEmpty(Model.MevcutGorselYolu))
+    {
+        <div class="mb-3">
+            <label class="form-label">Mevcut Görsel:</label><br />
+            <img src="@Model.MevcutGorselYolu" alt="Mevcut Görsel" class="img-fluid rounded shadow-sm" style="max-width: 300px;" />
+        </div>
+    }
+
+    <button type="submit" class="btn btn-primary">Kaydı Güncelle</button>
+    <a asp-action="Index" class="btn btn-secondary">İptal</a>
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

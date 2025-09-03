@@ -1,0 +1,76 @@
+﻿@model DisSagligiTakip.ViewModels.SonYediGunIstatistikViewModel
+@{
+    ViewData["Title"] = "Son 7 Gün İstatistikleri";
+}
+<h2>Son 7 Gün</h2>
+<div class="row g-3 my-2">
+    <div class="col-md-3">
+        <div class="card border-0 shadow-sm">
+            <div class="card-body">
+                <div class="fw-bold text-muted">Fırçalama</div>
+                <div class="fs-3">@Model.FircalamaToplam</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card border-0 shadow-sm">
+            <div class="card-body">
+                <div class="fw-bold text-muted">Not</div>
+                <div class="fs-3">@Model.NotToplam</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card border-0 shadow-sm">
+            <div class="card-body">
+                <div class="fw-bold text-muted">Diş Kaydı</div>
+                <div class="fs-3">@Model.DisKaydiToplam</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card border-0 shadow-sm">
+            <div class="card-body">
+                <div class="fw-bold text-muted">Randevu</div>
+                <div class="fs-3">@Model.RandevuToplam</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<hr />
+<h4>Fırçalama – Günlük</h4>
+<canvas id="fircalamaChart" height="100"></canvas>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        (function(){
+            const labels = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(
+            Model.FircalamaGunluk.Select(x => x.Gun.ToString("dd.MM"))));
+            const dataVals = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(
+            Model.FircalamaGunluk.Select(x => x.Adet)));
+
+            const ctx = document.getElementById('fircalamaChart');
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels,
+                    datasets: [{
+                        label: 'Fırçalama',
+                        data: dataVals,
+                        fill: false,
+                        tension: 0.3
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        y: { beginAtZero: true, ticks: { precision:0 } }
+                    }
+                }
+            });
+        })();
+    </script>
+}

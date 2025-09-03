@@ -1,0 +1,10 @@
+﻿@model DisSagligiTakip.ViewModels.RandevuDetayViewModel
+@{
+    ViewData["Title"] = "Randevu Sil";
+}
+<h2>Randevu Sil</h2>
+<p>Bu randevuyu silmek istediğine emin misin?</p>
+<form asp-action="Delete" asp-route-id="@Model.Id" method="post">
+    <button class="btn btn-danger">Evet, Sil</button>
+    <a asp-action="Index" class="btn btn-outline-secondary">Vazgeç</a>
+</form>

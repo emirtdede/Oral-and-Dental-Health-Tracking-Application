@@ -1,0 +1,25 @@
+﻿@{
+    ViewData["Title"] = "E-posta Doğrulama";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 text-center">
+            <h2 class="mb-4">📧 E-posta Doğrulama</h2>
+
+            @if (ViewBag.IsSuccess != null && (bool)ViewBag.IsSuccess)
+            {
+                <div class="alert alert-success">
+                    ✅ E-posta adresiniz başarıyla doğrulandı.<br />
+                    Artık <a asp-action="Login" class="alert-link">buraya tıklayarak giriş yapabilirsiniz</a>.
+                </div>
+            }
+            else
+            {
+                <div class="alert alert-danger">
+                    ❌ Geçersiz veya süresi dolmuş doğrulama bağlantısı. Lütfen yeni bir kayıt yapın ya da destek ekibine başvurun.
+                </div>
+            }
+        </div>
+    </div>
+</div>

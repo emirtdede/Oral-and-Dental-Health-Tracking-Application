@@ -1,0 +1,42 @@
+﻿@model List<DisSagligiTakip.Entities.Note>
+@{
+    ViewData["Title"] = "Notlarım";
+}
+
+<h2 class="mt-4">📝 Notlarım</h2>
+
+<a asp-action="Create" class="btn btn-success mb-3">+ Yeni Not</a>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-info">Henüz herhangi bir not eklenmemiş.</div>
+}
+else
+{
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+        @foreach (var note in Model)
+        {
+            <div class="col">
+                <div class="card h-100 shadow-sm border-primary">
+                    @if (!string.IsNullOrEmpty(note.GorselYolu))
+                    {
+                        <img src="@note.GorselYolu" class="card-img-top" alt="Not Görseli" style="height: 200px; object-fit: cover;" />
+                    }
+
+                    <div class="card-body">
+                        <h5 class="card-title">@note.Baslik</h5>
+                        <p class="card-text text-truncate">@note.Icerik</p>
+                        <p class="text-muted"><small>@note.Tarih.ToString("dd MMM yyyy HH:mm")</small></p>
+                    </div>
+                    <div class="card-footer d-flex justify-content-between">
+                        <a asp-action="Details" asp-route-id="@note.Id" class="btn btn-outline-info btn-sm">Detay</a>
+                        <a asp-action="Edit" asp-route-id="@note.Id" class="btn btn-outline-primary btn-sm">Düzenle</a>
+                        <form asp-action="DeleteConfirmed" asp-route-id="@note.Id" method="post" onsubmit="return confirm('Bu notu silmek istediğinize emin misiniz?');" class="d-inline">
+                            <button type="submit" class="btn btn-outline-danger btn-sm">Sil</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}

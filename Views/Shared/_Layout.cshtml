@@ -1,0 +1,168 @@
+﻿@inject IHttpContextAccessor HttpContextAccessor
+@using System.Security.Claims
+
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - DisSagligiTakip</title>
+
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/DisSagligiTakip.styles.css" asp-append-version="true" />
+
+    <style>
+        .toast-container {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            z-index: 1080;
+        }
+    </style>
+</head>
+<body class="d-flex flex-column min-vh-100">
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-light bg-white border-bottom box-shadow mb-3">
+            <div class="container-fluid">
+                <a class="navbar-brand" asp-controller="Home" asp-action="Index">DisSagligiTakip</a>
+
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+                        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse d-sm-inline-flex justify-content-between" id="navbarSupportedContent">
+                    <ul class="navbar-nav me-auto mb-2 mb-sm-0">
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-controller="Home" asp-action="Index">Ana Sayfa</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-controller="Home" asp-action="Privacy">Gizlilik</a>
+                        </li>
+
+                        @if (HttpContextAccessor.HttpContext?.User?.Identity?.IsAuthenticated == true)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-controller="DisSagligi" asp-action="Index">Diş Kayıtlarım</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-controller="Fircalama" asp-action="Index">Fırçalama Takibi</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-controller="Notes" asp-action="Index">Notlarım</a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-controller="Randevular" asp-action="Index">Randevular</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-controller="Istatistik" asp-action="Index">İstatistikler</a>
+                            </li>
+
+                            @* Hastalar menüsü: Patient harici roller *@
+                            @if (HttpContextAccessor.HttpContext.User.IsInRole("Admin")
+                           || HttpContextAccessor.HttpContext.User.IsInRole("SuperAdmin")
+                           || HttpContextAccessor.HttpContext.User.IsInRole("Doctor")
+                           || HttpContextAccessor.HttpContext.User.IsInRole("Assistant"))
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-controller="Hasta" asp-action="Index">Hastalar</a>
+                                </li>
+                            }
+
+                            @* Admin Panel: Admin ve SuperAdmin *@
+                            @if (HttpContextAccessor.HttpContext.User.IsInRole("Admin")
+                           || HttpContextAccessor.HttpContext.User.IsInRole("SuperAdmin"))
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-controller="Home" asp-action="AdminPanel">Admin Panel</a>
+                                </li>
+                            }
+                        }
+                    </ul>
+
+                    <ul class="navbar-nav mb-2 mb-sm-0">
+                        @if (HttpContextAccessor.HttpContext?.User?.Identity?.IsAuthenticated == true)
+                        {
+                            <li class="nav-item d-flex align-items-center">
+                                <span class="nav-link text-dark">
+                                    Merhaba, @(HttpContextAccessor.HttpContext?.Session?.GetString("FullName") ?? "Kullanıcı")
+                                </span>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-controller="Profile" asp-action="Edit">Profil</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-controller="Auth" asp-action="Logout">Çıkış Yap</a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-controller="Auth" asp-action="Login">Giriş Yap</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-controller="Auth" asp-action="Register">Kayıt Ol</a>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="border-top footer text-muted mt-auto py-3">
+        <div class="container">
+            &copy; @DateTime.Now.Year - DisSagligiTakip -
+            <a asp-controller="Home" asp-action="Privacy">Gizlilik</a>
+        </div>
+    </footer>
+
+    @* Toast bildirimleri *@
+    <div class="toast-container">
+        @if (TempData["Success"] != null)
+        {
+            <div class="toast align-items-center text-bg-success border-0 show" role="alert" aria-live="assertive" aria-atomic="true">
+                <div class="d-flex">
+                    <div class="toast-body">
+                        ✅ @TempData["Success"]
+                    </div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Kapat"></button>
+                </div>
+            </div>
+        }
+        else if (TempData["Error"] != null)
+        {
+            <div class="toast align-items-center text-bg-danger border-0 show" role="alert" aria-live="assertive" aria-atomic="true">
+                <div class="d-flex">
+                    <div class="toast-body">
+                        ❌ @TempData["Error"]
+                    </div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Kapat"></button>
+                </div>
+            </div>
+        }
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script>
+        window.addEventListener('DOMContentLoaded', () => {
+            const toastElList = Array.prototype.slice.call(document.querySelectorAll('.toast'));
+            toastElList.forEach(function (toastEl) {
+                new bootstrap.Toast(toastEl, { delay: 5000 }).show();
+            });
+        });
+    </script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

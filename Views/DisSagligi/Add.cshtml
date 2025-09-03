@@ -1,0 +1,36 @@
+﻿@model DisSagligiTakip.Entities.DisSagligiVerisi
+
+@{
+    ViewData["Title"] = "Yeni Diş Sağlığı Kaydı";
+}
+
+<h2 class="mt-4">🆕 Yeni Diş Sağlığı Kaydı</h2>
+
+<form asp-action="Add" method="post">
+    <div class="mb-3">
+        <label asp-for="Tarih" class="form-label">Tarih</label>
+        <input asp-for="Tarih" class="form-control" type="date" />
+        <span asp-validation-for="Tarih" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Aciklama" class="form-label">Açıklama</label>
+        <textarea asp-for="Aciklama" class="form-control" rows="3" placeholder="Tedavi açıklamasını yazınız..."></textarea>
+        <span asp-validation-for="Aciklama" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="DisHekimi" class="form-label">Diş Hekimi</label>
+        <input asp-for="DisHekimi" class="form-control" placeholder="Diş hekiminin adı ve soyadı" />
+        <span asp-validation-for="DisHekimi" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-success">Kaydı Ekle</button>
+    <a asp-action="Index" class="btn btn-secondary">İptal</a>
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

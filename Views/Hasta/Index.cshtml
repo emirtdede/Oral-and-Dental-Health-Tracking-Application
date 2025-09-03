@@ -1,0 +1,51 @@
+﻿@model List<DisSagligiTakip.Entities.User>
+@{
+    ViewData["Title"] = "Hastalar";
+    var q = ViewBag.Q as string;
+}
+
+<h2 class="mt-3">👨‍⚕️ Hastalar</h2>
+
+<form method="get" class="row g-2 mb-3">
+    <div class="col-sm-8 col-md-6">
+        <input type="text" name="q" value="@q" class="form-control" placeholder="İsim veya e-posta ile ara..." />
+    </div>
+    <div class="col-sm-4 col-md-3">
+        <button class="btn btn-primary w-100">Ara</button>
+    </div>
+    @if (!string.IsNullOrWhiteSpace(q))
+    {
+        <div class="col-sm-12 col-md-3">
+            <a asp-action="Index" class="btn btn-outline-secondary w-100">Temizle</a>
+        </div>
+    }
+</form>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-info">Kriterinize uygun hasta bulunamadı.</div>
+}
+else
+{
+    <table class="table table-striped align-middle">
+        <thead>
+            <tr>
+                <th>Ad Soyad</th>
+                <th>E-Posta</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var h in Model)
+            {
+                <tr>
+                    <td>@h.FullName</td>
+                    <td>@h.Email</td>
+                    <td class="text-end">
+                        <a asp-action="Detay" asp-route-id="@h.Id" class="btn btn-sm btn-info">Detayları Gör</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

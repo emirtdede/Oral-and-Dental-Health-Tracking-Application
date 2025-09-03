@@ -1,0 +1,49 @@
+﻿@model DisSagligiTakip.Models.NoteViewModel
+
+@{
+    ViewData["Title"] = "Notu Düzenle";
+}
+
+<h2 class="mt-4">✏️ Notu Düzenle</h2>
+
+<form asp-action="Edit" method="post" enctype="multipart/form-data" novalidate>
+    <input type="hidden" asp-for="Id" />
+    <input type="hidden" asp-for="MevcutGorselYolu" />
+
+    <div asp-validation-summary="All" class="text-danger"></div>
+
+    <div class="mb-3">
+        <label asp-for="Baslik" class="form-label">Başlık</label>
+        <input asp-for="Baslik" class="form-control" />
+        <span asp-validation-for="Baslik" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Icerik" class="form-label">İçerik</label>
+        <textarea asp-for="Icerik" class="form-control" rows="5"></textarea>
+        <span asp-validation-for="Icerik" class="text-danger"></span>
+    </div>
+
+    @if (!string.IsNullOrEmpty(Model.MevcutGorselYolu))
+    {
+        <div class="mb-3">
+            <label class="form-label">Mevcut Görsel</label>
+            <div>
+                <img src="@Model.MevcutGorselYolu" alt="Not Görseli" style="max-width: 200px;" class="img-thumbnail" />
+            </div>
+        </div>
+    }
+
+    <div class="mb-3">
+        <label asp-for="Gorsel" class="form-label">Yeni Görsel (İsteğe Bağlı)</label>
+        <input asp-for="Gorsel" type="file" class="form-control" accept="image/*" />
+        <span asp-validation-for="Gorsel" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Güncelle</button>
+    <a asp-action="Index" class="btn btn-secondary">İptal</a>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

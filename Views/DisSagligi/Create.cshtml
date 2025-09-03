@@ -1,0 +1,50 @@
+﻿@model DisSagligiTakip.Models.DisSagligiVerisiCreateVM
+@{
+    ViewData["Title"] = "Yeni Diş Sağlığı Kaydı";
+}
+
+<h2 class="mt-4">🦷 Yeni Diş Sağlığı Kaydı</h2>
+
+<form asp-action="Create" method="post" enctype="multipart/form-data" novalidate>
+    <div asp-validation-summary="All" class="text-danger"></div>
+
+    @* Patient dışındaki roller hasta seçebilir *@
+    @if (!User.IsInRole("Patient"))
+    {
+        <div class="mb-3">
+            <label asp-for="HastaUserId" class="form-label">Hasta</label>
+            <select asp-for="HastaUserId" asp-items="Model.Hastalar" class="form-select">
+                <option value="">— Hasta seçin (opsiyonel) —</option>
+            </select>
+            <span asp-validation-for="HastaUserId" class="text-danger"></span>
+        </div>
+    }
+
+    <div class="mb-3">
+        <label class="form-label">Diş Hekimi</label>
+        <select asp-for="DisHekimiAdi" asp-items="Model.Doktorlar" class="form-select">
+            <option value="">— Doktor seçin veya aşağıya yazın —</option>
+        </select>
+        <input asp-for="DisHekimiAdi" class="form-control mt-2" placeholder="Listede yoksa buraya yazın" />
+        <span asp-validation-for="DisHekimiAdi" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Aciklama" class="form-label">Açıklama</label>
+        <textarea asp-for="Aciklama" class="form-control" rows="4"></textarea>
+        <span asp-validation-for="Aciklama" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Gorsel" class="form-label">Görsel (opsiyonel)</label>
+        <input asp-for="Gorsel" type="file" class="form-control" accept="image/*" />
+        <span asp-validation-for="Gorsel" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-success">Kaydet</button>
+    <a asp-action="Index" class="btn btn-secondary">İptal</a>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

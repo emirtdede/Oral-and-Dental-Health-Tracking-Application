@@ -1,0 +1,39 @@
+﻿@model DisSagligiTakip.Entities.User
+
+@{
+    ViewData["Title"] = "Rolü Düzenle";
+    var roles = ViewBag.Roles as List<string>;
+}
+
+<h2 class="mb-4">Rolü Düzenle</h2>
+
+<form asp-action="EditRole" asp-controller="Home" method="post">
+    <input type="hidden" name="id" value="@Model.Id" />
+
+    <div class="mb-3">
+        <label class="form-label">Ad Soyad</label>
+        <input type="text" class="form-control" value="@Model.FullName" disabled />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Mevcut Rol</label>
+        <input type="text" class="form-control" value="@Model.Role" disabled />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Yeni Rol Seçin</label>
+        <select class="form-select" name="role" required>
+            <option value="">-- Rol Seçin --</option>
+            @if (roles != null)
+            {
+                foreach (var role in roles)
+                {
+                    <option value="@role">@role</option>
+                }
+            }
+        </select>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Güncelle</button>
+    <a asp-action="AdminPanel" class="btn btn-secondary">İptal</a>
+</form>

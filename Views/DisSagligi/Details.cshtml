@@ -1,0 +1,26 @@
+﻿@model DisSagligiTakip.Entities.DisSagligiVerisi
+
+@{
+    ViewData["Title"] = "Kayıt Detayları";
+}
+
+<h2 class="mt-4">📄 Kayıt Detayları</h2>
+
+<div class="card">
+    <div class="card-body">
+
+        <dl class="row">
+            <dt class="col-sm-3">Tarih</dt>
+            <dd class="col-sm-9">@Model.Tarih.ToString("dd MMMM yyyy")</dd>
+
+            <dt class="col-sm-3">Açıklama</dt>
+            <dd class="col-sm-9">@Model.Aciklama</dd>
+
+            <dt class="col-sm-3">Diş Hekimi</dt>
+            <dd class="col-sm-9">@Model.DisHekimi</dd>
+        </dl>
+
+        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Düzenle</a>
+        <a asp-action="Index" class="btn btn-secondary">Geri Dön</a>
+    </div>
+</div>

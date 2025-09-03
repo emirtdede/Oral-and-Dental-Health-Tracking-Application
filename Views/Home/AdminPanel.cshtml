@@ -1,0 +1,64 @@
+﻿@model List<DisSagligiTakip.Entities.User>
+@{
+    ViewData["Title"] = "Admin Panel";
+}
+
+<div class="container mt-4">
+    <h2 class="mb-4">🔧 Yönetici Paneli</h2>
+
+    <div class="alert alert-info">
+        Sisteme kayıtlı tüm kullanıcıları buradan görüntüleyebilir ve rollerini yönetebilirsiniz.
+    </div>
+
+    <table class="table table-bordered table-striped table-hover">
+        <thead class="table-dark">
+            <tr>
+                <th>#</th>
+                <th>Ad Soyad</th>
+                <th>E-Posta</th>
+                <th>Doğum Tarihi</th>
+                <th>Rol</th>
+                <th>E-Posta Doğrulandı mı?</th>
+                <th>İşlemler</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (int i = 0; i < Model.Count; i++)
+            {
+                var user = Model[i];
+                <tr>
+                    <td>@(i + 1)</td>
+                    <td>@user.FullName</td>
+                    <td>@user.Email</td>
+                    <td>@user.BirthDate.ToShortDateString()</td>
+                    <td>@user.Role</td>
+                    <td>
+                        @if (user.IsEmailConfirmed)
+                        {
+                            <span class="badge bg-success">Doğrulandı</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-secondary">Bekliyor</span>
+                        }
+                    </td>
+                    <td>
+                        @if (user.Role != DisSagligiTakip.Helpers.UserRoles.SuperAdmin)
+                        {
+                            <a class="btn btn-sm btn-outline-primary"
+                               asp-controller="Home"
+                               asp-action="EditRole"
+                               asp-route-id="@user.Id">
+                                Rolü Düzenle
+                            </a>
+                        }
+                        else
+                        {
+                            <span class="text-muted">⛔️ Değiştirilemez</span>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

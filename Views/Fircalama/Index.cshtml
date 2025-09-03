@@ -1,0 +1,53 @@
+﻿@model List<DisSagligiTakip.Entities.FircalamaKaydi>
+
+@{
+    ViewData["Title"] = "Fırçalama Kayıtları";
+}
+
+<h2 class="mt-4">🪥 Diş Fırçalama Takibi</h2>
+
+<a asp-action="Create" class="btn btn-success mb-3">+ Yeni Kayıt Ekle</a>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-info">Henüz fırçalama kaydı bulunmamaktadır.</div>
+}
+else
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Tarih</th>
+                <th>Açıklama</th>
+                <th>Görsel</th>
+                <th>İşlemler</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var kayit in Model)
+            {
+                <tr>
+                    <td>@kayit.Tarih.ToString("dd MMMM yyyy - HH:mm")</td>
+                    <td>@kayit.Aciklama</td>
+                    <td>
+                        @if (!string.IsNullOrEmpty(kayit.GorselYolu))
+                        {
+                            <img src="@kayit.GorselYolu" alt="Fırçalama Görseli" width="100" class="rounded shadow-sm" />
+                        }
+                        else
+                        {
+                            <span class="text-muted">Yok</span>
+                        }
+                    </td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@kayit.Id" class="btn btn-sm btn-primary">✏️</a>
+                        <a asp-action="Details" asp-route-id="@kayit.Id" class="btn btn-sm btn-info">🔍</a>
+                        <form asp-action="Delete" asp-route-id="@kayit.Id" method="post" class="d-inline">
+                            <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Bu kaydı silmek istediğinize emin misiniz?');">🗑️</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

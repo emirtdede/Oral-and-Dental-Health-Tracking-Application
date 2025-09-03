@@ -1,0 +1,36 @@
+﻿@model DisSagligiTakip.Models.FircalamaViewModel
+
+@{
+    ViewData["Title"] = "Diş Fırçalama Kaydı Ekle";
+}
+
+<h2 class="mt-4">🦷 Diş Fırçalama Kaydı Ekle</h2>
+
+<form asp-action="Create" method="post" enctype="multipart/form-data">
+    <div asp-validation-summary="All" class="text-danger"></div>
+
+    <div class="mb-3">
+        <label asp-for="Tarih" class="form-label">Tarih</label>
+        <input asp-for="Tarih" class="form-control" type="datetime-local" />
+        <span asp-validation-for="Tarih" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Aciklama" class="form-label">Açıklama</label>
+        <textarea asp-for="Aciklama" class="form-control"></textarea>
+        <span asp-validation-for="Aciklama" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Gorsel" class="form-label">Görsel (opsiyonel)</label>
+        <input asp-for="Gorsel" class="form-control" type="file" accept="image/*" />
+        <span asp-validation-for="Gorsel" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Kaydet</button>
+    <a asp-action="Index" class="btn btn-secondary">İptal</a>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

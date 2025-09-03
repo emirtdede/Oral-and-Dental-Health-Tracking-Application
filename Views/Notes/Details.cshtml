@@ -1,0 +1,32 @@
+﻿@model DisSagligiTakip.Entities.Note
+
+@{
+    ViewData["Title"] = "Not Detayları";
+}
+
+<h2 class="mt-4">📌 Not Detayları</h2>
+
+<div class="card mb-4">
+    <div class="card-body">
+        <h4 class="card-title">@Model.Baslik</h4>
+        <p class="card-text">@Model.Icerik</p>
+
+        @if (!string.IsNullOrEmpty(Model.GorselYolu))
+        {
+            <div class="mt-3">
+                <label class="form-label fw-bold">Görsel:</label><br />
+                <img src="@Model.GorselYolu" alt="Not Görseli" class="img-fluid rounded" style="max-width: 400px;" />
+            </div>
+        }
+
+        <div class="mt-4 text-muted">
+            <small>Oluşturulma Tarihi: @Model.Tarih.ToString("dd MMMM yyyy - HH:mm")</small>
+        </div>
+    </div>
+</div>
+
+<a asp-action="Index" class="btn btn-secondary">← Geri Dön</a>
+<a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">✏️ Düzenle</a>
+<form asp-action="Delete" asp-route-id="@Model.Id" method="post" class="d-inline">
+    <button type="submit" class="btn btn-danger" onclick="return confirm('Bu notu silmek istediğinize emin misiniz?');">🗑️ Sil</button>
+</form>

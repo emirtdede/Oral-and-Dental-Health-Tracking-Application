@@ -1,0 +1,47 @@
+﻿@model List<DisSagligiTakip.Entities.DisSagligiVerisi>
+
+@{
+    ViewData["Title"] = "Diş Sağlığı Kayıtlarım";
+}
+
+<h2 class="mt-4">🦷 Diş Sağlığı Kayıtlarım</h2>
+
+<a asp-action="Create" class="btn btn-success mb-3">+ Yeni Kayıt</a>
+
+@if (Model == null || Model.Count == 0)
+{
+    <div class="alert alert-info">Henüz herhangi bir kayıt eklenmemiş.</div>
+}
+else
+{
+    <table class="table table-bordered table-hover">
+        <thead class="table-dark">
+            <tr>
+                <th scope="col">Tarih</th>
+                <th scope="col">Açıklama</th>
+                <th scope="col">Diş Hekimi</th>
+                <th scope="col" class="text-end">İşlemler</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Tarih.ToString("dd.MM.yyyy")</td>
+                    <td>@item.Aciklama</td>
+                    <td>@item.DisHekimi</td>
+                    <td class="text-end">
+                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-outline-primary me-1">Düzenle</a>
+
+                        <form asp-action="Delete" asp-route-id="@item.Id" method="post" class="d-inline">
+                            <input type="hidden" name="id" value="@item.Id" />
+                            <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('Silmek istediğinize emin misiniz?');">
+                                Sil
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

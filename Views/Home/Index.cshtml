@@ -1,0 +1,147 @@
+﻿@{
+    ViewData["Title"] = "Ana Sayfa";
+
+    var fullName = Context.Session.GetString("FullName") ?? "Kullanıcı";
+
+    string roleKey =
+        User.IsInRole("SuperAdmin") ? "SuperAdmin" :
+        User.IsInRole("Admin") ? "Admin" :
+        User.IsInRole("Doctor") ? "Doctor" :
+        User.IsInRole("Assistant") ? "Assistant" :
+        "Patient";
+
+    string roleDisplay =
+        roleKey == "SuperAdmin" ? "Süper Yönetici" :
+        roleKey == "Admin" ? "Yönetici" :
+        roleKey == "Doctor" ? "Doktor" :
+        roleKey == "Assistant" ? "Asistan" :
+        "Kullanıcı";
+}
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+<div class="container py-4">
+
+    <!-- Selamlama / Rol bandı -->
+    <div class="alert alert-info d-flex align-items-center justify-content-between">
+        <div class="me-2">
+            <i class="bi bi-emoji-smile me-2"></i>
+            <strong>Merhaba @fullName</strong>, rolünüz:
+            <span class="badge bg-secondary">@roleDisplay</span>
+        </div>
+
+        @if (User.IsInRole("SuperAdmin") || User.IsInRole("Admin"))
+        {
+            <a class="btn btn-sm btn-outline-primary" asp-controller="Home" asp-action="AdminPanel">
+                <i class="bi bi-speedometer2 me-1"></i> Admin Paneline Git
+            </a>
+        }
+    </div>
+
+    <!-- Başlık / Açıklama -->
+    <div class="text-center mb-3">
+        <h2 class="fw-semibold">Ağız ve Diş Sağlığı Takip Uygulamasına Hoş Geldiniz!</h2>
+        <p class="text-muted">
+            Bu uygulama ile ağız ve diş sağlığınızı kolayca takip edebilir, geçmiş verilerinizi görüntüleyebilir ve gerekli hatırlatmaları alabilirsiniz.
+        </p>
+    </div>
+
+    <!-- Hızlı Eylemler -->
+    <div class="card border-0 shadow-sm mb-4">
+        <div class="card-body">
+            <div class="d-flex flex-wrap gap-2">
+                <a class="btn btn-outline-primary" asp-controller="DisSagligi" asp-action="Index">
+                    <i class="bi bi-journal-medical me-1"></i> Diş Kayıtlarım
+                </a>
+                <a class="btn btn-outline-primary" asp-controller="Fircalama" asp-action="Index">
+                    <i class="bi bi-tooth me-1"></i> Fırçalama Takibi
+                </a>
+                <a class="btn btn-outline-primary" asp-controller="Notes" asp-action="Index">
+                    <i class="bi bi-sticky me-1"></i> Notlarım
+                </a>
+
+                @* Randevu menüsü: Hasta ise "Randevularım", diğer roller "Randevular" *@
+                @if (User.IsInRole("Patient"))
+                {
+                    <a class="btn btn-primary" asp-controller="Randevular" asp-action="My">
+                        <i class="bi bi-calendar-check me-1"></i> Randevularım
+                    </a>
+                }
+                else
+                {
+                    <a class="btn btn-primary" asp-controller="Randevular" asp-action="Index">
+                        <i class="bi bi-calendar-check me-1"></i> Randevular
+                    </a>
+                }
+
+                <a class="btn btn-outline-secondary" asp-controller="Randevular" asp-action="Takvim">
+                    <i class="bi bi-calendar3 me-1"></i> Takvim
+                </a>
+                <a class="btn btn-outline-success" asp-controller="Istatistik" asp-action="Index">
+                    <i class="bi bi-graph-up me-1"></i> İstatistikler (Son 7 Gün)
+                </a>
+
+                @if (User.IsInRole("Admin") || User.IsInRole("SuperAdmin") || User.IsInRole("Doctor") || User.IsInRole("Assistant"))
+                {
+                    <a class="btn btn-outline-dark" asp-controller="Hasta" asp-action="Index">
+                        <i class="bi bi-people me-1"></i> Hastalar
+                    </a>
+                }
+            </div>
+        </div>
+    </div>
+
+    <!-- Modül Kartları -->
+    <div class="row g-3">
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <div class="d-flex align-items-center mb-2">
+                        <i class="bi bi-tooth-fill fs-3 me-2"></i>
+                        <h5 class="mb-0">Diş Kayıtları</h5>
+                    </div>
+                    <p class="text-muted mb-3">Muayene notları, görseller ve diş sağlığı verilerini yönetin.</p>
+                    <a asp-controller="DisSagligi" asp-action="Index" class="btn btn-sm btn-outline-primary">Aç</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <div class="d-flex align-items-center mb-2">
+                        <i class="bi bi-calendar2-check fs-3 me-2"></i>
+                        <h5 class="mb-0">Muayene Randevuları</h5>
+                    </div>
+                    <p class="text-muted mb-3">Randevuları listeleyin, takvimde inceleyin ve hızlıca yeni randevu oluşturun.</p>
+                    <div class="d-flex gap-2">
+                        @if (User.IsInRole("Patient"))
+                        {
+                            <a asp-controller="Randevular" asp-action="My" class="btn btn-sm btn-outline-primary">Randevularım</a>
+                        }
+                        else
+                        {
+                            <a asp-controller="Randevular" asp-action="Index" class="btn btn-sm btn-outline-primary">Liste</a>
+                        }
+                        <a asp-controller="Randevular" asp-action="Takvim" class="btn btn-sm btn-outline-secondary">Takvim</a>
+                        <a asp-controller="Randevular" asp-action="Create" class="btn btn-sm btn-primary">Yeni</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <div class="d-flex align-items-center mb-2">
+                        <i class="bi bi-graph-up-arrow fs-3 me-2"></i>
+                        <h5 class="mb-0">İstatistikler</h5>
+                    </div>
+                    <p class="text-muted mb-3">Son 7 gün için fırçalama, not, diş kaydı ve randevu özetini görün.</p>
+                    <a asp-controller="Istatistik" asp-action="Index" class="btn btn-sm btn-outline-success">Görüntüle</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

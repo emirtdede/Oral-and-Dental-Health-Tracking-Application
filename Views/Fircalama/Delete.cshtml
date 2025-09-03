@@ -1,0 +1,35 @@
+﻿@model DisSagligiTakip.Entities.FircalamaKaydi
+
+@{
+    ViewData["Title"] = "Fırçalama Kaydını Sil";
+}
+
+<h2 class="mt-4 text-danger">⚠️ Fırçalama Kaydını Sil</h2>
+
+<div class="alert alert-warning">
+    Bu kaydı silmek üzeresiniz. Devam etmek istediğinize emin misiniz?
+</div>
+
+<div class="card mb-4">
+    <div class="card-body">
+        <h5 class="card-title text-primary">🗓️ Tarih: @Model.Tarih.ToString("dd MMMM yyyy - HH:mm")</h5>
+
+        <p class="card-text">
+            <strong>📝 Açıklama:</strong><br />
+            @Model.Aciklama
+        </p>
+
+        @if (!string.IsNullOrEmpty(Model.GorselYolu))
+        {
+            <div class="mt-3">
+                <strong>🖼️ Görsel:</strong><br />
+                <img src="@Model.GorselYolu" alt="Fırçalama Görseli" class="img-fluid rounded shadow-sm" style="max-width: 400px;" />
+            </div>
+        }
+    </div>
+</div>
+
+<form asp-action="DeleteConfirmed" asp-route-id="@Model.Id" method="post">
+    <button type="submit" class="btn btn-danger">🗑️ Evet, Sil</button>
+    <a asp-action="Index" class="btn btn-secondary">Vazgeç</a>
+</form>
