@@ -1,3 +1,6 @@
+
+<img width="2099" height="1266" alt="Ekran görüntüsü 2025-09-06 193509" src="https://github.com/user-attachments/assets/1cb40136-b90a-4ae3-aeee-acd7a0c5dd9d" />
+
 ````markdown
 # Oral and Dental Health Tracking Application
 
