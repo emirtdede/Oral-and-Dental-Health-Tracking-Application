@@ -1,6 +1,6 @@
 <div align="center">
 
-# 🪥 Oral & Dental Health Tracking Application
+# 🦷 Oral and Dental Health Tracking Application
 
 [![](https://img.shields.io/badge/Language-English-blue?style=for-the-badge&logo=google-translate)](#english-version)
 &nbsp;&nbsp;&nbsp;&nbsp;
@@ -8,10 +8,10 @@
 
 ---
 
-[![ASP.NET Core MVC](https://img.shields.io/badge/ASP.NET_Core_MVC-8.0-512BD4?style=flat-square&logo=.net&logoColor=white)](https://dotnet.microsoft.com/en-us/apps/aspnet/mvc)
-[![Entity Framework Core](https://img.shields.io/badge/Entity_Framework_Core-8.0-512BD4?style=flat-square&logo=.net&logoColor=white)](https://learn.microsoft.com/en-us/ef/core/)
-[![SQL Server](https://img.shields.io/badge/SQL_Server-Database-CC292B?style=flat-square&logo=microsoft-sql-server&logoColor=white)](https://www.microsoft.com/en-us/sql-server)
-[![Bootstrap](https://img.shields.io/badge/Bootstrap-5.3-7952B3?style=flat-square&logo=bootstrap&logoColor=white)](https://getbootstrap.com/)
+[![.NET Core](https://img.shields.io/badge/.NET_Core-8.0-512BD4?style=flat-square&logo=dotnet&logoColor=white)](https://dotnet.microsoft.com/en-us/)
+[![ASP.NET MVC](https://img.shields.io/badge/ASP.NET_Core_MVC-Web_App-blue?style=flat-square&logo=microsoft&logoColor=white)](https://learn.microsoft.com/en-us/aspnet/core/mvc/overview)
+[![EF Core](https://img.shields.io/badge/EF_Core-SQL_Server-purple?style=flat-square&logo=microsoft&logoColor=white)](#)
+[![Cookie Auth](https://img.shields.io/badge/Authentication-Cookie-orange?style=flat-square)](#)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)](https://opensource.org/licenses/MIT)
 
 </div>
@@ -21,65 +21,57 @@
 <a id="english-version"></a>
 # English Version
 
-A comprehensive, full-stack web application designed to track dental hygiene habits, log personal dental health metrics, and manage clinical appointments. Built using **ASP.NET Core MVC** and **Entity Framework Core**, the application serves patients looking to track their hygiene habits and dentists managing appointment schedulers.
+A comprehensive full-stack **Oral and Dental Health Tracking Web Application** designed for patient file management, appointment scheduling, and personal dental hygiene tracking. It provides specialized access layers for patients, dentists, and clinic assistants.
 
 ## 🚀 Key Features
 
-*   **🔐 Secure Authentication & Roles**: Safe register/login mechanisms with specific user role distributions (e.g., patient, dentist/physician).
-*   **📅 Appointment Management System**: Users can book clinical visits with specific physicians. Features multi-index database configurations for faster loading and prevention of scheduling conflicts.
-*   **🦷 Dental Health Loggers**: Logs and monitors dental symptoms, treatments, and records. Can also be utilized by administrators/dentists to input data on behalf of patients.
-*   **🪥 Brushing habit tracker**: Log daily teeth brushing routines (timestamps, duration, technique) to build healthier hygiene habits.
-*   **📊 Interactive Progress Statistics**: Dashboard charts highlighting brushing frequencies and health metrics over time.
-*   **📝 Personal Logs & Notes**: Private note-taking capability for users to record dental pain levels, symptom timelines, and questions for upcoming checkups.
+*   **👥 Role-based Access Control**: Cookie-based authentication system supporting distinct portals for Patients, Dentists, and Clinic Assistants.
+*   **📅 Appointment Scheduler**: Interactive booking and management system enabling clinics to organize doctor shifts, patients to view available slots, and prescribe medical notes.
+*   **🦷 Detailed Dental Records**: Systematically logs dental data (decay, filling, sensitivity, gum conditions, pain rating) with physical image uploads (configured with a safe 20MB limit).
+*   **🪥 Brushing Log Tracker**: Encourages patients to log daily oral hygiene habits (timer, brushing techniques, gum bleeding tracking).
+*   **✉️ SMTP Email Integration**: Automatic notification engine configured to send reminders and confirmation emails through Gmail SMTP.
+*   **📝 Secure Session & Local Logging**: Session state management and structured diagnostic logging via `FileLogService`.
 
 ---
 
 ## 🛠️ Technology Stack
 
-*   **Backend Framework**: ASP.NET Core 8.0 MVC (Model-View-Controller pattern)
-*   **Database ORM**: Entity Framework Core (Code-First migration approach)
-*   **Database Engine**: Microsoft SQL Server / LocalDB
-*   **Frontend Technologies**: Razor Views, HTML5, CSS3, JavaScript, Bootstrap 5
+*   **Core**: .NET Core 8 (ASP.NET Core MVC architecture)
+*   **Database**: Entity Framework Core with SQL Server integration
+*   **Authentication**: Cookie Authentication middleware (sliding expiration, HttpOnly, secure cookies)
+*   **Development Utilities**: Razor Runtime Compilation enabled under debug environments for hot-reloading views
+
+---
+
+## 💾 Core Entities & Data Model
+
+The application architecture utilizes 5 main relational database entities:
+1.  **User**: Stores names, secure password credentials, email contacts, and roles (Patient, Dentist, Assistant).
+2.  **DisSagligiVerisi**: Records specific dental health updates, descriptive details, prescribing doctor names, and visual uploads.
+3.  **MuayeneRandevusu**: Schedules appointments containing clinic, slot, doctor, and status metadata.
+4.  **FircalamaKaydi**: Tracks personal habits including brushing duration, bleeding flags, and techniques.
+5.  **Note**: Stores personal reminders, category mappings, and urgency levels.
 
 ---
 
 ## 📁 Project Structure
 
 ```text
-DisSagligiTakip/
-├── Business/        # Domain-driven business logic and services
-├── Controllers/     # MVC Controllers handling client requests
-├── DataAccess/      # Database context (EF Core) and repository patterns
-├── DTOs/            # Data Transfer Objects for decoupled API structures
-├── Entities/        # Database models (User, Note, FircalamaKaydi, MuayeneRandevusu, etc.)
-├── Helpers/         # Utility methods and encryption helpers
-├── Migrations/      # EF Core database migrations
-├── Models/          # MVC ViewModels
-├── Services/        # Service interfaces and implementations
-├── Views/           # Razor markup (.cshtml) templates for the user interface
-├── wwwroot/         # Public static files (CSS, JS, images, libraries)
-├── Program.cs       # ASP.NET Core web host configuration and service registrations
-└── appsettings.json # Connection strings and environment configurations
+├── Business/           # Business logic service implementations
+├── Controllers/        # MVC request flow control (Auth, Home, Randevu, Notes)
+├── DataAccess/         # DB Context definitions, database schema initializers (SeedData)
+├── DTOs/               # Data Transfer Objects
+├── Entities/           # Database tables and custom HSL enum definitions
+├── Views/              # Razor layouts and template interfaces
+├── ViewModels/         # Composite ViewModels mapped to presentation layers
+├── Migrations/         # EF Core migration files
+├── Program.cs          # Pipeline configurations and Dependency Injection mapping
+└── appsettings.json    # Connection strings and SMTP parameters
 ```
 
 ---
 
-## 🧠 Database Architecture
-
-The SQLite/SQL Server schema managed via Entity Framework Core (`AppDbContext`) covers the following database relations:
-*   `Users`: Stores account credentials, email, phone, and Enum roles.
-*   `Notes`: Relates to users (1:N) with cascade-delete constraints for private logs.
-*   `FircalamaKayitlari`: Relates to users (1:N) storing logs of brushing timestamps.
-*   `DisSagligiVerileri`: Stores dental metrics, tracking both the patient and the creator (in case a doctor records it on behalf of a patient).
-*   `MuayeneRandevulari`: Manages clinical appointments mapping patients, physicians, dates, and status codes. Features speed optimizations via composite indexes on (`HekimUserId`, `BaslangicZamani`) and (`HastaUserId`, `BaslangicZamani`).
-
----
-
-## ⚙️ Setup & Execution
-
-### Prerequisites
-- .NET 8.0 SDK installed on your system.
-- LocalDB or MS SQL Server installed and running.
+## ⚙️ Setup & Execution Guide
 
 ### 1. Clone the Repository
 ```bash
@@ -87,26 +79,38 @@ git clone https://github.com/emirtdede/Oral-and-Dental-Health-Tracking-Applicati
 cd Oral-and-Dental-Health-Tracking-Application
 ```
 
-### 2. Configure the Connection String
-Open `appsettings.json` and adjust the connection string to match your SQL Server setup:
+### 2. Configure Database & Connection Strings
+Open `appsettings.json` and configure your local SQL Server instance:
 ```json
 "ConnectionStrings": {
-  "DefaultConnection": "Server=(localdb)\\mssqllocaldb;Database=DisSagligiTakipDb;Trusted_Connection=True;MultipleActiveResultSets=true"
+    "DefaultConnection": "Server=YOUR_SERVER;Database=DisSagligiDb;Trusted_Connection=True;TrustServerCertificate=True;"
 }
 ```
 
-### 3. Update Database
-Run EF Core migration commands to initialize the database:
+### 3. Update Database Schema
+Ensure the latest migrations are applied to your database:
 ```bash
 dotnet ef database update
 ```
 
-### 4. Build and Run
-Execute the application:
+### 4. Configure SMTP Server (Optional)
+Specify your email credentials in `appsettings.json` for mail integrations:
+```json
+"Smtp": {
+    "Host": "smtp.gmail.com",
+    "Port": 587,
+    "EnableSsl": true,
+    "User": "your-email@gmail.com",
+    "Password": "your-app-password"
+}
+```
+
+### 5. Launch the Application
+Run the project using dotNET CLI:
 ```bash
 dotnet run
 ```
-Open `https://localhost:5001` or `http://localhost:5000` in your web browser.
+Open the localhost address shown in your terminal (typically `https://localhost:5001`).
 
 ---
 
@@ -118,65 +122,57 @@ This project is licensed under the [MIT License](LICENSE).
 <a id="turkish-version"></a>
 # Türkçe Versiyon
 
-Ağız ve diş sağlığı alışkanlıklarını takip etmek, kişisel diş sağlığı metriklerini kaydetmek ve klinik randevuları yönetmek amacıyla tasarlanmış kapsamlı ve tam donanımlı (full-stack) bir web uygulamasıdır. **ASP.NET Core MVC** ve **Entity Framework Core** kullanılarak geliştirilen uygulama, hem hijyen alışkanlıklarını izlemek isteyen hastalara hem de randevu planlamalarını yöneten hekimlere hizmet vermektedir.
+Hasta kaydı yönetimi, randevu çizelgeleri ve kişisel ağız hijyeni takibi için geliştirilmiş, tam donanımlı (full-stack) bir **Ağız ve Diş Sağlığı Takip Web Uygulamasıdır**. Hastalar, diş hekimleri ve klinik asistanları için özel olarak yetkilendirilmiş erişim panelleri sunar.
 
 ## 🚀 Öne Çıkan Özellikler
 
-*   **🔐 Güvenli Kimlik Doğrulama & Rol Yönetimi**: Özel rol dağılımlarına (Örn: Hasta, Hekim/Diş Hekimi) sahip güvenli kayıt ve giriş mekanizmaları.
-*   **📅 Randevu Yönetim Sistemi**: Diş hekimlerinden uygun tarihlere muayene randevusu alma. Veritabanı sorgularını hızlandırmak ve çakışmaları önlemek için çoklu indeksleme yapılandırması.
-*   **🦷 Diş Sağlığı Kayıt Defteri**: Diş semptomlarının, tedavilerin ve klinik verilerin takibi. Hekimlerin hastaları adına sisteme veri girişi yapabilmesi desteği.
-*   **🪥 Diş Fırçalama Takibi**: Sağlıklı hijyen alışkanlıkları oluşturmak amacıyla günlük diş fırçalama rutinlerinin (zaman, süre, teknik) kaydedilmesi.
-*   **📊 İnteraktif İstatistikler**: Fırçalama sıklığı ve ağız sağlığı gelişimini zaman serisi grafikleriyle sunan gösterge paneli.
-*   **📝 Kişisel Günlük & Notlar**: Kullanıcıların diş ağrılarını, semptom geçmişlerini veya hekimlerine soracakları soruları kaydedebilecekleri özel not alanı.
+*   **👥 Rol Tabanlı Erişim Yönetimi**: Cookie tabanlı kimlik doğrulama sistemi ile Hasta, Diş Hekimi ve Klinik Asistanı rolleri için ayrılmış ekranlar.
+*   **📅 Muayene Randevu Sistemi**: Kliniklerin hekim mesailerini planlamasına, hastaların boş randevu slotlarını seçip randevu almasına ve reçete/hekim notu eklenmesine olanak tanıyan etkileşimli yapı.
+*   **🦷 Detaylı Ağız ve Diş Kaydı**: Çürük, dolgu, hassasiyet, diş eti kanaması gibi diş bazlı durumları, güvenli 20MB dosya yükleme desteğiyle görsel ekleyerek kaydetme.
+*   **🪥 Fırçalama Takip Günlüğü**: Hastaların günlük diş fırçalama alışkanlıklarını (süre, fırçalama teknikleri, diş eti kanaması durumu) kayıt altına almasını teşvik eden modül.
+*   **✉️ SMTP E-posta Entegrasyonu**: Gmail SMTP altyapısı üzerinden randevu onayları, hatırlatmalar ve bildirim e-postaları gönderen otomatik servis.
+*   **📝 Güvenli Oturum ve Dosya Günlüğü**: Oturum yönetimi desteği ve `FileLogService` ile sunucu üzerinde yapılandırılmış günlük (log) kaydı.
 
 ---
 
 ## 🛠️ Kullanılan Teknolojiler
 
-*   **Arkayüz Çerçevesi**: ASP.NET Core 8.0 MVC (Model-View-Controller deseni)
-*   **Veritabanı ORM**: Entity Framework Core (Code-First yaklaşımı)
-*   **Veritabanı Sunucusu**: Microsoft SQL Server / LocalDB
-*   **Arayüz Teknolojileri**: Razor Views, HTML5, CSS3, JavaScript, Bootstrap 5
+*   **Çekirdek**: .NET Core 8 (ASP.NET Core MVC mimarisi)
+*   **Veritabanı**: Entity Framework Core ile SQL Server ilişkisel veritabanı
+*   **Kimlik Doğrulama**: Cookie Kimlik Doğrulama ara katmanı (sliding expiration, HttpOnly, secure çerezler)
+*   **Geliştirme Araçları**: Arayüzlerin hızlı düzenlenebilmesi için geliştirme ortamında Razor Runtime Compilation aktif edilmiştir.
+
+---
+
+## 💾 Temel Veri Modelleri (Entities)
+
+Uygulama ilişkisel veritabanında 5 ana model üzerinden çalışmaktadır:
+1.  **User**: Kullanıcı bilgileri, şifre hash'leri, e-posta adresleri ve rolleri tutar.
+2.  **DisSagligiVerisi**: Diş sağlık durumu güncellemelerini, açıklamaları, hekim adını ve yüklenen görselleri saklar.
+3.  **MuayeneRandevusu**: Randevu tarihi, klinik, hekim ve durum bilgilerini içerir.
+4.  **FircalamaKaydi**: Fırçalama süresi, kanama durumu ve fırçalama tekniklerini kaydeder.
+5.  **Note**: Kişisel notları, önem düzeylerini ve not kategorilerini barındırır.
 
 ---
 
 ## 📁 Proje Yapısı
 
 ```text
-DisSagligiTakip/
-├── Business/        # İş mantığı ve domain katmanı servisleri
-├── Controllers/     # İstemci isteklerini işleyen MVC Kontrolcüleri
-├── DataAccess/      # EF Core veritabanı bağlamı ve depo (repository) desenleri
-├── DTOs/            # Veri transfer nesneleri (Data Transfer Objects)
-├── Entities/        # Veritabanı modelleri (User, Note, FircalamaKaydi, MuayeneRandevusu vb.)
-├── Helpers/         # Yardımcı araçlar ve şifreleme metotları
-├── Migrations/      # EF Core veritabanı göç (migration) dosyaları
-├── Models/          # MVC ViewModels yapıları
-├── Services/        # Servis arayüzleri ve uygulamaları
-├── Views/           # Arayüz için oluşturulmuş Razor şablonları (.cshtml)
-├── wwwroot/         # Statik dosyalar (CSS, JS, resimler, kütüphaneler)
-├── Program.cs       # Web sunucusu yapılandırmaları ve servis kayıtları
-└── appsettings.json # Veritabanı bağlantı adresleri ve ortam ayarları
+├── Business/           # İş mantığı (Business logic) servisleri ve kodları
+├── Controllers/        # MVC istek yönlendiricileri (Giriş, Randevu, Notlar vb.)
+├── DataAccess/         # DB Context tanımları ve başlangıç verileri (SeedData)
+├── DTOs/               # Veri Taşıma Nesneleri (Data Transfer Objects)
+├── Entities/           # Veritabanı tablo modelleri ve Enum tanımları
+├── Views/              # Razor arayüz şablonları ve sayfaları
+├── ViewModels/         # Arayüze veri taşımak için özelleştirilmiş modeller
+├── Migrations/         # EF Core veritabanı göç (migration) dosyaları
+├── Program.cs          # Pipeline ayarları ve Servis/Repository DI tanımları
+└── appsettings.json    # Veritabanı bağlantı dizeleri ve SMTP parametreleri
 ```
 
 ---
 
-## 🧠 Veri Tabanı Mimarisi
-
-Entity Framework Core (`AppDbContext`) üzerinden yönetilen veritabanı ilişkileri şunları kapsamaktadır:
-*   `Users`: Kullanıcı kimlik bilgileri, e-posta, telephone ve Enum tabanlı rolleri saklar.
-*   `Notes`: Kullanıcılara (1:N) ilişkisiyle bağlıdır, kullanıcı silindiğinde cascade-delete ile temizlenir.
-*   `FircalamaKayitlari`: Kullanıcılara (1:N) ilişkisiyle bağlıdır, fırçalama zaman damgalarını tutar.
-*   `DisSagligiVerileri`: Ağız sağlığı verilerini saklar, hekimin hasta adına kayıt oluşturabilmesi için hem hastayı hem de kaydı oluşturan kullanıcıyı takip eder.
-*   `MuayeneRandevulari`: Randevu kayıtlarını; hasta, hekim, başlangıç saati ve durum kodlarıyla yönetir. Veritabanı sorgularını hızlandırmak amacıyla (`HekimUserId`, `BaslangicZamani`) ve (`HastaUserId`, `BaslangicZamani`) kolonlarında kompozit indeksleme yapılmıştır.
-
----
-
 ## ⚙️ Kurulum ve Çalıştırma
-
-### Önkoşullar
-- Bilgisayarınızda .NET 8.0 SDK yüklü olmalıdır.
-- LocalDB veya MS SQL Server kurulu ve çalışır durumda olmalıdır.
 
 ### 1. Depoyu Klonlayın
 ```bash
@@ -184,26 +180,38 @@ git clone https://github.com/emirtdede/Oral-and-Dental-Health-Tracking-Applicati
 cd Oral-and-Dental-Health-Tracking-Application
 ```
 
-### 2. Bağlantı Dizesini Yapılandırın
-`appsettings.json` dosyasını açarak SQL Server sunucunuza uygun şekilde bağlantı dizesini düzenleyin:
+### 2. Veritabanını Yapılandırın
+`appsettings.json` dosyasını açarak yerel SQL Server bağlantı dizenizi tanımlayın:
 ```json
 "ConnectionStrings": {
-  "DefaultConnection": "Server=(localdb)\\mssqllocaldb;Database=DisSagligiTakipDb;Trusted_Connection=True;MultipleActiveResultSets=true"
+    "DefaultConnection": "Server=YEREL_SUNUCU;Database=DisSagligiDb;Trusted_Connection=True;TrustServerCertificate=True;"
 }
 ```
 
 ### 3. Veritabanını Güncelleyin
-Veritabanını oluşturmak için EF Core migration komutunu çalıştırın:
+Gerekli tabloları veritabanında oluşturmak için aşağıdaki komutu çalıştırın:
 ```bash
 dotnet ef database update
 ```
 
-### 4. Derleyin ve Çalıştırın
-Uygulamayı başlatın:
+### 4. SMTP Sunucusunu Yapılandırın (Opsiyonel)
+E-posta bildirimleri için `appsettings.json` altından mail bilgilerinizi tanımlayın:
+```json
+"Smtp": {
+    "Host": "smtp.gmail.com",
+    "Port": 587,
+    "EnableSsl": true,
+    "User": "e-postaniz@gmail.com",
+    "Password": "uygulama-sifreniz"
+}
+```
+
+### 5. Uygulamayı Başlatın
+Projeyi dotNET CLI kullanarak çalıştırın:
 ```bash
 dotnet run
 ```
-Tarayıcınızdan `https://localhost:5001` veya `http://localhost:5000` adreslerini ziyaret edin.
+Konsolda belirtilen adresi tarayıcınızda açın (Genellikle `https://localhost:5001`).
 
 ---
 
