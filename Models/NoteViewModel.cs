@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http;
 using System.ComponentModel.DataAnnotations;
 
 namespace DisSagligiTakip.Models
@@ -9,11 +9,11 @@ namespace DisSagligiTakip.Models
 
         [Required(ErrorMessage = "Başlık alanı zorunludur.")]
         [StringLength(100, ErrorMessage = "Başlık en fazla 100 karakter olabilir.")]
-        public string Baslik { get; set; }
+        public string Baslik { get; set; } = string.Empty;
 
         [Required(ErrorMessage = "İçerik alanı zorunludur.")]
         [StringLength(5000, ErrorMessage = "İçerik en fazla 5000 karakter olabilir.")]
-        public string Icerik { get; set; }
+        public string Icerik { get; set; } = string.Empty;
 
         // Yeni görsel dosyası yüklemek için
         public IFormFile? Gorsel { get; set; }

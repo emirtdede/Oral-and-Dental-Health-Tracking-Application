@@ -1,4 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
 
 namespace DisSagligiTakip.DTOs
 {
@@ -9,11 +9,11 @@ namespace DisSagligiTakip.DTOs
 
         [Required(ErrorMessage = "Yeni şifre alanı zorunludur.")]
         [DataType(DataType.Password)]
-        public string NewPassword { get; set; }
+        public string NewPassword { get; set; } = string.Empty;
 
         [Required(ErrorMessage = "Şifre onayı alanı zorunludur.")]
         [DataType(DataType.Password)]
         [Compare("NewPassword", ErrorMessage = "Şifreler uyuşmuyor.")]
-        public string ConfirmPassword { get; set; }
+        public string ConfirmPassword { get; set; } = string.Empty;
     }
 }

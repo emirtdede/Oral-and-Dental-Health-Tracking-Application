@@ -1,4 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
 
 namespace DisSagligiTakip.DTOs
 {
@@ -6,6 +6,6 @@ namespace DisSagligiTakip.DTOs
     {
         [Required(ErrorMessage = "E-posta alanı zorunludur.")]
         [EmailAddress(ErrorMessage = "Geçerli bir e-posta adresi giriniz.")]
-        public string Email { get; set; }
+        public string Email { get; set; } = string.Empty;
     }
 }

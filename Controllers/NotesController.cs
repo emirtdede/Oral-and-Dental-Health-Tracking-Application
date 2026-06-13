@@ -1,4 +1,4 @@
-﻿using DisSagligiTakip.DataAccess;
+using DisSagligiTakip.DataAccess;
 using DisSagligiTakip.Entities;
 using DisSagligiTakip.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -163,6 +163,7 @@ namespace DisSagligiTakip.Controllers
 
         // ✅ Not Silme (POST)
         [HttpPost]
+        [ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public IActionResult DeleteConfirmed(int id)
         {

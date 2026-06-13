@@ -1,4 +1,4 @@
-﻿using System.IO;
+using System.IO;
 
 namespace DisSagligiTakip.Helpers
 {
@@ -11,7 +11,7 @@ namespace DisSagligiTakip.Helpers
             logFilePath = Path.Combine(Directory.GetCurrentDirectory(), "Logs", "log.txt");
 
             var logDir = Path.GetDirectoryName(logFilePath);
-            if (!Directory.Exists(logDir))
+            if (!string.IsNullOrEmpty(logDir) && !Directory.Exists(logDir))
                 Directory.CreateDirectory(logDir);
         }
 

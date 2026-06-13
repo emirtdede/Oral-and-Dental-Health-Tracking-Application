@@ -1,8 +1,8 @@
-﻿namespace DisSagligiTakip.DTOs
+namespace DisSagligiTakip.DTOs
 {
     public class VerifyEmailDTO
     {
         public int UserId { get; set; }
-        public string Token { get; set; }
+        public string Token { get; set; } = string.Empty;
     }
 }

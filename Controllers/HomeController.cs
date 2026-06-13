@@ -1,4 +1,4 @@
-﻿using System.Diagnostics;
+using System.Diagnostics;
 using DisSagligiTakip.DataAccess;
 using DisSagligiTakip.Entities;
 using DisSagligiTakip.Helpers;
@@ -28,6 +28,7 @@ namespace DisSagligiTakip.Controllers
         }
 
         // ✅ Gizlilik Sayfası
+        [AllowAnonymous]
         public IActionResult Privacy()
         {
             return View();
